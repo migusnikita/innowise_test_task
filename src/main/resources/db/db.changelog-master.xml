@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="1" author="migus_nikita@mail.ru">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(60)"/>
+            <column name="password" type="varchar(60)"/>
+            <column name="email" type="varchar(60)"/>
+            <column name="created_at" type="date"/>
+            <column name="role" type="enum('ADMIN','TRADER')"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="migus_nikita@mail.ru">
+        <createTable tableName="announcement">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="created_at" type="date"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="migus_nikita@mail.ru">
+        <createTable tableName="auto">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="brand" type="varchar(60)"/>
+            <column name="model" type="varchar(60)"/>
+            <column name="transmission" type="enum('AUTO','MECHANICAL')"/>
+            <column name="engine" type="BIGINT"/>
+            <column name="year" type="BIGINT"/>
+            <column name="announcement_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="migus_nikita@mail.ru">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="announcement"
+                                 constraintName="fk_announcement_to_user"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet id="5" author="migus_nikita@mail.ru">
+        <addForeignKeyConstraint baseColumnNames="announcement_id"
+                                 baseTableName="auto"
+                                 constraintName="fk_auto_to_announcement"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="announcement"
+                                 validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>
